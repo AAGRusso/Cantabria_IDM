@@ -2,7 +2,7 @@
 /*
 * Importa los perfiles desde un archivo .CSV
 * El formato del CSV es:
-* Aplicacion,Perfil,Descripción,Quorum,CodBahia,Comprobación
+* Aplicacion,Perfil,Descripción,Quorum,CodBahia,Comprobación,plataforma
 */
 
 /* version: 1.1 */
@@ -19,6 +19,7 @@ ini_set("html_errors", 1);
 
 //set_error_handler("var_dump");
 
+$VERSION="1.1";
 
 ##### 
 $WS_PROT="http";
@@ -40,7 +41,7 @@ $LOG_DISPLAY="file";		// scr - file - all
 $LOG_FILE="log-importPerfiles.log";
 $SOAP_DEBUG=false;
 #####
-$APP_NAME="importPerfiles_v1";
+$APP_NAME="importPerfiles_v".$VERSION;
 $DELIM=",";
 $CHARSET="WIN";
 $CHARSET="UTF";
@@ -98,6 +99,7 @@ while (!feof($handle)) {
 		$Quorum			= iconv("ISO-8859-15","UTF-8",$data[3]);
 		$rpt			= iconv("ISO-8859-15","UTF-8",$data[4]);
 		$unidad			= iconv("ISO-8859-15","UTF-8",$data[5]);
+		$plataforma		= iconv("ISO-8859-15","UTF-8",$data[6]);
 	} else {
 		$APP1			= $data[0];
 		$Perfil1		= $data[1];
@@ -105,6 +107,7 @@ while (!feof($handle)) {
 		$Quorum			= $data[3];
 		$rpt			= $data[4];
 		$unidad			= $data[5];
+		$plataforma		= $data[6];
 	} // conversion de datos
 	
 	
@@ -115,6 +118,7 @@ while (!feof($handle)) {
 	myLog("\$Quorum       : $Quorum,",5,"");
 	myLog("\$rpt          : $rpt",5,"");
 	myLog("\$unidad       : $unidad",5,"");
+	myLog("\$plataforma   : $plataforma",5,"");
 	myLog("---------------",5,"");
 	//print_r($data);
 
