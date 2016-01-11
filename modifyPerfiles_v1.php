@@ -1,13 +1,12 @@
 <?php
 /*
-* Importa los perfiles desde un archivo .CSV
+* Modifica los perfiles desde un archivo .CSV
 * El formato del CSV es:
 * Aplicacion,Perfil,Descripción,Quorum,CodBahia,Comprobación,plataforma
 */
 
-/* version: 1.1 */
+/* version: 1 */
 /* Change Log:
- * Añadida una columna con la plataforma
 */
 
 date_default_timezone_set( 'Europe/Madrid' );
@@ -19,11 +18,11 @@ ini_set("html_errors", 1);
 
 //set_error_handler("var_dump");
 
-$VERSION="1.1";
+$VERSION="1.0";
 
 ##### 
 $WS_PROT="http";
-$WS_HOST="172.30.22.234";
+$WS_HOST="172.30.22.154";
 
 //$WS_HOST="w2k12idm";
 
@@ -38,10 +37,10 @@ $WS_PASS="novell_1";
 #####
 $DEBUG=1;					// 0=No - 1=Error - 2=Info - 3=Verbose - 4=Debug  5=Completo
 $LOG_DISPLAY="file";		// scr - file - all
-$LOG_FILE="log-importPerfiles.log";
+$LOG_FILE="log-modifyPerfiles.log";
 $SOAP_DEBUG=false;
 #####
-$APP_NAME="importPerfiles_v".$VERSION;
+$APP_NAME="modifyPerfiles_v".$VERSION;
 $DELIM=",";
 $CHARSET="WIN";
 $CHARSET="UTF";
@@ -202,7 +201,7 @@ while (!feof($handle)) {
 
 	if (!$SOAP_DEBUG) {
 		if ( trim($Perfil) != "" ) {
-			$result = createRole($stub_prov,$role);
+			$result = modifyRole($stub_prov,$role);
 		} else {
 			myLog("Error registro sin Nombre: ".$contador,1,"");
 		}
@@ -211,6 +210,8 @@ while (!feof($handle)) {
 		echo "-----------------------------------------\n";
 		myLog("modo SOAP DEBUG:".$contador,1,"");
 	}
+
+/*
 	// Si se ha creado el recurso
 	if ( $result) {
 		// Generamos la llamada para crear la asociación con la Aplicación
@@ -248,7 +249,7 @@ while (!feof($handle)) {
 			myLog("Error generando asociación: ".$roleDN,1,"");
 		}
 	}
-
+*/
 	$contador++;
 }
 
@@ -268,14 +269,14 @@ function getSoapStub( $wsdl, $user, $pwd )
 return( $stub );
 }
 
-function createRole ($wsObj,$role) {
+function modifyRole ($wsObj,$role) {
 	//use_soap_error_handler (false);
 	$result = "";
 	try
-	{ $response = $wsObj->createRole(array('role'=> $role) );
+	{ $response = $wsObj->modifyRole(array('role'=> $role) );
 		//var_dump($response);
 		$result=true;
-		myLog("createRole OK: ".$role['entityKey'],0,""); }
+		myLog("modifyRole OK: ".$role['entityKey'],0,""); }
 	catch ( SoapFault $exception )
 		{ //var_dump($exception);
 			//echo "\n\n\n\n\n\n\n\n\n\n============================================\n\n";
